@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dardaman</title>
+    <meta name="description" content="The Dardaman family portal. Visit Charles and Samantha's personal sites." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --color-bg: #f6f6f4;
+        --color-surface: #ffffff;
+        --color-text: #2c2d30;
+        --color-muted: #6f7175;
+        --color-border: #e0e1e3;
+        --font-sans: "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+        --shadow-soft: 0 12px 32px rgba(25, 27, 31, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        color: var(--color-text);
+        background: var(--color-bg);
+        line-height: 1.65;
+      }
+
+      .split {
+        display: flex;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .split__half {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: var(--color-text);
+        padding: 48px 32px;
+        transition: background-color 300ms ease;
+        perspective: 800px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .split__half--charles:hover {
+        background-color: rgba(44, 45, 48, 0.02);
+      }
+
+      .split__half--samantha:hover {
+        background-color: rgba(111, 113, 117, 0.03);
+      }
+
+      .split__card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 28px;
+        padding: 56px 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        box-shadow: var(--shadow-soft);
+        transition: transform 200ms ease, box-shadow 120ms ease, border-color 120ms ease;
+        opacity: 0;
+        transform: translateY(12px);
+        animation: fadeUp 400ms ease forwards;
+        will-change: transform;
+      }
+
+      .split__half:first-child .split__card {
+        animation-delay: 0ms;
+      }
+
+      .split__half:last-child .split__card {
+        animation-delay: 80ms;
+      }
+
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .split__half:hover .split__card,
+      .split__half:focus .split__card {
+        transform: translateY(-4px) scale(1.02) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        box-shadow: 0 16px 32px rgba(25, 27, 31, 0.14);
+        border-color: #c5c6c9;
+      }
+
+      .split__half:focus {
+        outline: none;
+      }
+
+      .split__half:focus-visible .split__card {
+        outline: 2px solid var(--color-text);
+        outline-offset: 4px;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 16px 32px rgba(25, 27, 31, 0.14);
+        border-color: #c5c6c9;
+      }
+
+      .split__icon {
+        width: 64px;
+        height: 64px;
+      }
+
+      .split__icon svg {
+        width: 100%;
+        height: 100%;
+        stroke: var(--color-border);
+        transition: stroke 120ms ease;
+        stroke-dasharray: 200;
+        stroke-dashoffset: 200;
+        animation: drawIcon 800ms ease forwards;
+      }
+
+      .split__half--charles .split__icon svg {
+        animation-delay: 100ms;
+      }
+
+      .split__half--samantha .split__icon svg {
+        animation-delay: 180ms;
+      }
+
+      @keyframes drawIcon {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      .split__half:hover .split__icon svg,
+      .split__half:focus-visible .split__icon svg {
+        stroke: var(--color-muted);
+      }
+
+      .split__half--charles .split__icon {
+        transition: transform 300ms ease;
+      }
+
+      .split__half--charles:hover .split__icon {
+        animation: float 1.5s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+      }
+
+      .split__half--samantha .split__icon {
+        transition: transform 300ms ease;
+        transform-origin: center;
+      }
+
+      .split__half--samantha:hover .split__icon {
+        animation: wiggle 2s ease-in-out infinite;
+      }
+
+      @keyframes wiggle {
+        0%, 100% { transform: rotate(0deg); }
+        15% { transform: rotate(-3deg); }
+        30% { transform: rotate(3deg); }
+        45% { transform: rotate(-1.5deg); }
+        55% { transform: rotate(0deg); }
+      }
+
+      .split__label {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: var(--color-muted);
+        transition: color 120ms ease;
+      }
+
+      .split__half:hover .split__label,
+      .split__half:focus-visible .split__label {
+        color: var(--color-text);
+      }
+
+      .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .split__divider {
+        position: absolute;
+        left: calc(50% - 5px);
+        top: 0;
+        width: 10px;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
+        transform: scaleY(0);
+        animation: growDivider 600ms ease 200ms forwards, breathe 4s ease-in-out 800ms infinite;
+      }
+
+      @keyframes growDivider {
+        to {
+          transform: scaleY(1);
+        }
+      }
+
+      @keyframes breathe {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+      }
+
+      @media (max-width: 768px) {
+        .split {
+          flex-direction: column;
+        }
+
+        .split__half {
+          min-height: 50vh;
+          flex: none;
+        }
+
+        .split__divider {
+          left: 50%;
+          right: auto;
+          top: 50%;
+          bottom: auto;
+          width: 10px;
+          height: 80vw;
+          transform: translate(-50%, -50%) rotate(90deg) scaleY(0);
+          animation: growDividerH 600ms ease 200ms forwards, breathe 4s ease-in-out 800ms infinite;
+        }
+
+        @keyframes growDividerH {
+          to {
+            transform: translate(-50%, -50%) rotate(90deg) scaleY(1);
+          }
+        }
+      }
+
+      @media (max-width: 480px) {
+        .split__half {
+          padding: 32px 20px;
+        }
+
+        .split__card {
+          padding: 40px 32px;
+          gap: 20px;
+        }
+
+        .split__icon {
+          width: 48px;
+          height: 48px;
+        }
+
+        .split__label {
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="split">
+      <a class="split__half split__half--charles" href="https://charles.dardaman.com">
+        <div class="split__card">
+          <div class="split__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M8 21h8" />
+              <path d="M12 17v4" />
+            </svg>
+          </div>
+          <span class="split__label">Charles</span>
+        </div>
+      </a>
+
+      <svg class="split__divider" viewBox="0 0 10 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 0 C8 16.7, 2 33.3, 5 50 C8 66.7, 2 83.3, 5 100" stroke="#e0e1e3" fill="none" stroke-width="1" vector-effect="non-scaling-stroke">
+          <animate attributeName="d"
+            values="M5 0 C8 16.7,2 33.3,5 50 C8 66.7,2 83.3,5 100;M5 0 C2 16.7,8 33.3,5 50 C2 66.7,8 83.3,5 100;M5 0 C8 16.7,2 33.3,5 50 C8 66.7,2 83.3,5 100"
+            dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
+        </path>
+      </svg>
+
+      <a class="split__half split__half--samantha" href="https://samantha.dardaman.com">
+        <div class="split__card">
+          <div class="split__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6.5 6v12" />
+              <path d="M17.5 6v12" />
+              <path d="M6.5 12h11" />
+              <rect x="3" y="8" width="3.5" height="8" rx="1" />
+              <rect x="17.5" y="8" width="3.5" height="8" rx="1" />
+              <rect x="1" y="9.5" width="2" height="5" rx="0.5" />
+              <rect x="21" y="9.5" width="2" height="5" rx="0.5" />
+            </svg>
+          </div>
+          <span class="split__label">Sam</span>
+        </div>
+      </a>
+    </main>
+
+    <script>
+      // Magnetic cursor tilt
+      document.querySelectorAll('.split__half').forEach(function (half) {
+        var card = half.querySelector('.split__card');
+
+        half.addEventListener('mousemove', function (e) {
+          var rect = half.getBoundingClientRect();
+          var x = (e.clientX - rect.left) / rect.width - 0.5;
+          var y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.setProperty('--tilt-x', (y * -6) + 'deg');
+          card.style.setProperty('--tilt-y', (x * 6) + 'deg');
+        });
+
+        half.addEventListener('mouseleave', function () {
+          card.style.setProperty('--tilt-x', '0deg');
+          card.style.setProperty('--tilt-y', '0deg');
+        });
+      });
+
+      // Floating particles - deferred to ensure layout is ready
+      requestAnimationFrame(function () {
+        var halves = document.querySelectorAll('.split__half');
+
+        function makeCanvas(parent) {
+          var c = document.createElement('canvas');
+          c.className = 'particles';
+          parent.appendChild(c);
+          var ctx = c.getContext('2d');
+          function resize() {
+            var r = parent.getBoundingClientRect();
+            c.width = r.width;
+            c.height = r.height;
+          }
+          resize();
+          window.addEventListener('resize', resize);
+          return { c: c, ctx: ctx, el: parent };
+        }
+
+        // Track mouse position per half
+        var mouse = [{x: -999, y: -999}, {x: -999, y: -999}];
+        halves.forEach(function (half, idx) {
+          half.addEventListener('mousemove', function (e) {
+            var r = half.getBoundingClientRect();
+            mouse[idx].x = e.clientX - r.left;
+            mouse[idx].y = e.clientY - r.top;
+          });
+          half.addEventListener('mouseleave', function () {
+            mouse[idx].x = -999;
+            mouse[idx].y = -999;
+          });
+        });
+
+        var cursorRadius = 60;
+        var cursorForce = 1.5;
+
+        function bounce(p, w, h, m) {
+          // Wall bounce with padding
+          var pad = p.size * 1.5;
+          if (p.x < pad) { p.x = pad; p.vx = Math.abs(p.vx); }
+          if (p.x > w - pad) { p.x = w - pad; p.vx = -Math.abs(p.vx); }
+          if (p.y < pad) { p.y = pad; p.vy = Math.abs(p.vy); }
+          if (p.y > h - pad) { p.y = h - pad; p.vy = -Math.abs(p.vy); }
+          // Cursor repulsion
+          var dx = p.x - m.x;
+          var dy = p.y - m.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < cursorRadius && dist > 0) {
+            var force = (1 - dist / cursorRadius) * cursorForce;
+            p.vx += (dx / dist) * force;
+            p.vy += (dy / dist) * force;
+          }
+          // Dampen velocity so they don't fly off forever
+          var speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+          var maxSpeed = 1.5;
+          var minSpeed = 0.3;
+          if (speed > maxSpeed) {
+            p.vx = (p.vx / speed) * maxSpeed;
+            p.vy = (p.vy / speed) * maxSpeed;
+          }
+          // Drag only above cruise speed
+          if (speed > minSpeed) {
+            p.vx *= 0.995;
+            p.vy *= 0.995;
+          } else if (speed < minSpeed && speed > 0) {
+            // Nudge back up to minimum drift
+            p.vx = (p.vx / speed) * minSpeed;
+            p.vy = (p.vy / speed) * minSpeed;
+          }
+        }
+
+        // SVG sprites for complex particle shapes (brain + sneaker)
+        // Process image into a recolored sprite while preserving source transparency
+        function makeSprite(src, callback) {
+          var img = new Image();
+          img.decoding = 'async';
+          img.onload = function () {
+            // Downscale very large assets so particle rendering stays cheap
+            var maxDim = 320;
+            var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+            var w = Math.max(1, Math.round(img.width * scale));
+            var h = Math.max(1, Math.round(img.height * scale));
+            var cv = document.createElement('canvas');
+            cv.width = w;
+            cv.height = h;
+            var cx = cv.getContext('2d', { willReadFrequently: true });
+            cx.drawImage(img, 0, 0, w, h);
+            try {
+              var id = cx.getImageData(0, 0, w, h);
+              var d = id.data;
+              for (var i = 0; i < d.length; i += 4) {
+                var srcAlpha = d[i + 3] / 255;
+                var bright = (d[i] + d[i + 1] + d[i + 2]) / (255 * 3);
+                // Keep transparent pixels transparent; map darker pixels to stronger alpha
+                var mask = srcAlpha * (1 - bright);
+                d[i] = 111;
+                d[i + 1] = 113;
+                d[i + 2] = 117;
+                d[i + 3] = Math.round(mask * 255);
+              }
+              cx.putImageData(id, 0, 0);
+            } catch (err) {
+              // If pixel reads are blocked (origin policy), use the raw image as fallback
+              console.warn('Sprite processing skipped for', src, err);
+            }
+            callback(cv);
+          };
+          img.onerror = function () {
+            console.warn('Failed to load sprite:', src);
+          };
+          img.src = src;
+        }
+
+        var brainSprite = null;
+        makeSprite('./assets/brain.png', function (cv) { brainSprite = cv; });
+        var shoeSprite = null;
+        makeSprite('./assets/shoe.png', function (cv) { shoeSprite = cv; });
+
+        // Charles - AI/coding drawn icons
+        var cd = makeCanvas(halves[0]);
+        var cCommon = ['terminal', 'robot', 'chip', 'graph'];
+        var cp = [];
+        // 13 common icons
+        for (var i = 0; i < 13; i++) {
+          cp.push({
+            x: Math.random() * cd.c.width,
+            y: Math.random() * cd.c.height,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            size: Math.random() * 6 + 10,
+            opacity: Math.random() * 0.1 + 0.12,
+            icon: cCommon[Math.floor(Math.random() * cCommon.length)],
+            rot: (Math.random() - 0.5) * 0.4,
+            rs: (Math.random() - 0.5) * 0.005
+          });
+        }
+        // 1 deep network
+        cp.push({
+          x: Math.random() * cd.c.width,
+          y: Math.random() * cd.c.height,
+          vx: (Math.random() - 0.5) * 0.8,
+          vy: (Math.random() - 0.5) * 0.8,
+          size: Math.random() * 4 + 10,
+          opacity: Math.random() * 0.05 + 0.12,
+          icon: 'brain',
+          rot: (Math.random() - 0.5) * 0.2,
+          rs: (Math.random() - 0.5) * 0.003
+        });
+
+        // Samantha - weighted distribution: mostly weights with a few feature icons
+        var sd = makeCanvas(halves[1]);
+        var weights = ['dumbbell', 'kettlebell', 'barbell'];
+        var sp = [];
+        // 12 weight icons
+        for (var j = 0; j < 12; j++) {
+          sp.push({
+            x: Math.random() * sd.c.width,
+            y: Math.random() * sd.c.height,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            size: Math.random() * 6 + 10,
+            opacity: Math.random() * 0.1 + 0.12,
+            shape: weights[Math.floor(Math.random() * weights.length)],
+            rot: Math.random() * Math.PI * 2,
+            rs: (Math.random() - 0.5) * 0.008
+          });
+        }
+        // 1 anatomical brain
+        for (var k = 0; k < 1; k++) {
+          sp.push({
+            x: Math.random() * sd.c.width,
+            y: Math.random() * sd.c.height,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            size: Math.random() * 6 + 10,
+            opacity: Math.random() * 0.1 + 0.12,
+            shape: 'anatomical_brain',
+            rot: Math.random() * Math.PI * 2,
+            rs: (Math.random() - 0.5) * 0.008
+          });
+        }
+        // 2 sneakers with stronger visibility
+        for (var m = 0; m < 2; m++) {
+          sp.push({
+            x: Math.random() * sd.c.width,
+            y: Math.random() * sd.c.height,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            size: Math.random() * 5 + 16,
+            opacity: Math.random() * 0.1 + 0.24,
+            shape: 'sneaker',
+            rot: (Math.random() - 0.5) * 0.28,
+            rs: (Math.random() - 0.5) * 0.0015
+          });
+        }
+
+        function loop() {
+          var cw = cd.c.width, ch = cd.c.height;
+          cd.ctx.clearRect(0, 0, cw, ch);
+          cp.forEach(function (p) {
+            var c = cd.ctx, s = p.size;
+            c.save();
+            c.globalAlpha = p.opacity;
+            c.translate(p.x, p.y);
+            c.rotate(p.rot);
+            c.strokeStyle = '#6f7175';
+            c.fillStyle = '#6f7175';
+            c.lineWidth = 1.5;
+            c.lineCap = 'round';
+            c.lineJoin = 'round';
+
+            if (p.icon === 'terminal') {
+              // Terminal window
+              c.beginPath();
+              c.roundRect(-s, -s * 0.75, s * 2, s * 1.5, 3);
+              c.stroke();
+              // Title bar line
+              c.beginPath();
+              c.moveTo(-s, -s * 0.35);
+              c.lineTo(s, -s * 0.35);
+              c.stroke();
+              // 3 window dots
+              var dotR = s * 0.08;
+              [[-s * 0.75, -s * 0.55], [-s * 0.5, -s * 0.55], [-s * 0.25, -s * 0.55]].forEach(function (d) {
+                c.beginPath();
+                c.arc(d[0], d[1], dotR, 0, Math.PI * 2);
+                c.fill();
+              });
+              // Prompt arrow >_
+              c.lineWidth = 2;
+              c.beginPath();
+              c.moveTo(-s * 0.6, s * 0.0);
+              c.lineTo(-s * 0.25, s * 0.2);
+              c.lineTo(-s * 0.6, s * 0.4);
+              c.stroke();
+              // Cursor line
+              c.beginPath();
+              c.moveTo(-s * 0.05, s * 0.4);
+              c.lineTo(s * 0.4, s * 0.4);
+              c.stroke();
+            } else if (p.icon === 'brain') {
+              // Neural network - 3→4→3→1 with hollow nodes
+              var ns = s * 2.5;
+              var gapX = ns * 0.55;
+              var gapY = ns * 0.42;
+              var nodeR = ns * 0.14;
+              // Layer positions: centered vertically
+              var layers = [
+                // Input: 1 node
+                [[-gapX * 2, 0]],
+                // Hidden 1: 3 nodes
+                [[-gapX, -gapY], [-gapX, 0], [-gapX, gapY]],
+                // Hidden 2: 4 nodes
+                [[0, -gapY * 1.5], [0, -gapY * 0.5], [0, gapY * 0.5], [0, gapY * 1.5]],
+                // Hidden 3: 3 nodes
+                [[gapX, -gapY], [gapX, 0], [gapX, gapY]],
+                // Output: 1 node
+                [[gapX * 2, 0]]
+              ];
+              // Connection lines
+              c.lineWidth = 0.6;
+              c.strokeStyle = '#6f7175';
+              c.beginPath();
+              for (var li = 0; li < layers.length - 1; li++) {
+                layers[li].forEach(function (n1) {
+                  layers[li + 1].forEach(function (n2) {
+                    c.moveTo(n1[0], n1[1]); c.lineTo(n2[0], n2[1]);
+                  });
+                });
+              }
+              c.stroke();
+              // Hollow nodes - white fill with stroke outline
+              c.lineWidth = 1.8;
+              layers.forEach(function (layer) {
+                layer.forEach(function (n) {
+                  c.beginPath();
+                  c.arc(n[0], n[1], nodeR, 0, Math.PI * 2);
+                  c.fillStyle = '#ffffff';
+                  c.fill();
+                  c.strokeStyle = '#6f7175';
+                  c.stroke();
+                });
+              });
+              c.fillStyle = '#6f7175';
+            } else if (p.icon === 'robot') {
+              // Robot head
+              var rs = s * 1.2;
+              // Antenna
+              c.lineWidth = 2;
+              c.beginPath();
+              c.moveTo(0, -rs * 0.65);
+              c.lineTo(0, -rs * 1.0);
+              c.stroke();
+              c.beginPath();
+              c.arc(0, -rs * 1.05, rs * 0.1, 0, Math.PI * 2);
+              c.fill();
+              // Head
+              c.lineWidth = 1.5;
+              c.beginPath();
+              c.roundRect(-rs * 0.6, -rs * 0.65, rs * 1.2, rs * 1.0, 4);
+              c.stroke();
+              // Eyes
+              c.beginPath();
+              c.arc(-rs * 0.25, -rs * 0.2, rs * 0.12, 0, Math.PI * 2);
+              c.fill();
+              c.beginPath();
+              c.arc(rs * 0.25, -rs * 0.2, rs * 0.12, 0, Math.PI * 2);
+              c.fill();
+              // Mouth - grid/speaker lines
+              c.lineWidth = 1.5;
+              c.beginPath();
+              c.moveTo(-rs * 0.3, rs * 0.1);
+              c.lineTo(rs * 0.3, rs * 0.1);
+              c.moveTo(-rs * 0.3, rs * 0.22);
+              c.lineTo(rs * 0.3, rs * 0.22);
+              c.stroke();
+              // Ear bolts
+              c.beginPath();
+              c.arc(-rs * 0.6, -rs * 0.15, rs * 0.08, 0, Math.PI * 2);
+              c.fill();
+              c.beginPath();
+              c.arc(rs * 0.6, -rs * 0.15, rs * 0.08, 0, Math.PI * 2);
+              c.fill();
+            } else if (p.icon === 'chip') {
+              // CPU/chip - larger with distinct pins
+              var cs = s * 0.8;
+              c.lineWidth = 1.5;
+              c.beginPath();
+              c.roundRect(-cs, -cs, cs * 2, cs * 2, 3);
+              c.stroke();
+              // Inner die
+              c.beginPath();
+              c.roundRect(-cs * 0.4, -cs * 0.4, cs * 0.8, cs * 0.8, 2);
+              c.fill();
+              // Pins with end-caps on all 4 sides
+              c.lineWidth = 2;
+              var pinOff = [-cs * 0.5, 0, cs * 0.5];
+              var pinLen = cs * 0.5;
+              var capR = 1.5;
+              pinOff.forEach(function (off) {
+                // Top pins
+                c.beginPath();
+                c.moveTo(off, -cs); c.lineTo(off, -cs - pinLen);
+                c.stroke();
+                c.beginPath(); c.arc(off, -cs - pinLen, capR, 0, Math.PI * 2); c.fill();
+                // Bottom pins
+                c.beginPath();
+                c.moveTo(off, cs); c.lineTo(off, cs + pinLen);
+                c.stroke();
+                c.beginPath(); c.arc(off, cs + pinLen, capR, 0, Math.PI * 2); c.fill();
+                // Left pins
+                c.beginPath();
+                c.moveTo(-cs, off); c.lineTo(-cs - pinLen, off);
+                c.stroke();
+                c.beginPath(); c.arc(-cs - pinLen, off, capR, 0, Math.PI * 2); c.fill();
+                // Right pins
+                c.beginPath();
+                c.moveTo(cs, off); c.lineTo(cs + pinLen, off);
+                c.stroke();
+                c.beginPath(); c.arc(cs + pinLen, off, capR, 0, Math.PI * 2); c.fill();
+              });
+            } else {
+              // Graph / chart - line graph trending up
+              c.lineWidth = 1.5;
+              // Axes
+              c.beginPath();
+              c.moveTo(-s * 0.8, -s * 0.7);
+              c.lineTo(-s * 0.8, s * 0.7);
+              c.lineTo(s * 0.8, s * 0.7);
+              c.stroke();
+              // Data line going up
+              c.lineWidth = 2;
+              c.beginPath();
+              c.moveTo(-s * 0.6, s * 0.4);
+              c.lineTo(-s * 0.2, s * 0.1);
+              c.lineTo(s * 0.15, s * 0.3);
+              c.lineTo(s * 0.6, -s * 0.5);
+              c.stroke();
+              // Data points
+              [[-s * 0.6, s * 0.4], [-s * 0.2, s * 0.1], [s * 0.15, s * 0.3], [s * 0.6, -s * 0.5]].forEach(function (pt) {
+                c.beginPath();
+                c.arc(pt[0], pt[1], s * 0.1, 0, Math.PI * 2);
+                c.fill();
+              });
+            }
+
+            c.restore();
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.rs;
+            bounce(p, cw, ch, mouse[0]);
+          });
+
+          var sw = sd.c.width, sh = sd.c.height;
+          sd.ctx.clearRect(0, 0, sw, sh);
+          sp.forEach(function (p) {
+            sd.ctx.save();
+            sd.ctx.globalAlpha = p.opacity;
+            sd.ctx.translate(p.x, p.y);
+            sd.ctx.rotate(p.rot);
+            var isSneaker = p.shape === 'sneaker';
+            sd.ctx.strokeStyle = isSneaker ? '#55585e' : '#6f7175';
+            sd.ctx.fillStyle = isSneaker ? '#55585e' : '#6f7175';
+            sd.ctx.lineWidth = 1.5;
+            sd.ctx.lineCap = 'round';
+            sd.ctx.lineJoin = 'round';
+            var s = p.size;
+            if (p.shape === 'dumbbell') {
+              var ds = s * 1.2;
+              // Handle bar
+              sd.ctx.lineWidth = 2;
+              sd.ctx.beginPath();
+              sd.ctx.moveTo(-ds * 0.6, 0);
+              sd.ctx.lineTo(ds * 0.6, 0);
+              sd.ctx.stroke();
+              // Left weight (rounded rect)
+              sd.ctx.lineWidth = 1.5;
+              var rw = ds * 0.45, rh = ds * 0.9;
+              sd.ctx.beginPath();
+              sd.ctx.roundRect(-ds * 0.6 - rw, -rh / 2, rw, rh, 2);
+              sd.ctx.fill();
+              // Right weight
+              sd.ctx.beginPath();
+              sd.ctx.roundRect(ds * 0.6, -rh / 2, rw, rh, 2);
+              sd.ctx.fill();
+            } else if (p.shape === 'kettlebell') {
+              // Body - round ball with flat bottom
+              sd.ctx.beginPath();
+              sd.ctx.arc(0, s * 0.25, s * 0.75, 0, Math.PI * 2);
+              sd.ctx.fill();
+              // Flat bottom - overwrite with a straight edge
+              sd.ctx.fillStyle = '#f6f6f4';
+              sd.ctx.fillRect(-s, s * 0.85, s * 2, s * 0.5);
+              sd.ctx.fillStyle = '#6f7175';
+              // Flat base line
+              sd.ctx.lineWidth = 1.5;
+              sd.ctx.beginPath();
+              sd.ctx.moveTo(-s * 0.6, s * 0.85);
+              sd.ctx.lineTo(s * 0.6, s * 0.85);
+              sd.ctx.stroke();
+              // Horns narrowing up
+              sd.ctx.beginPath();
+              sd.ctx.moveTo(-s * 0.45, -s * 0.3);
+              sd.ctx.lineTo(-s * 0.3, -s * 0.5);
+              sd.ctx.moveTo(s * 0.45, -s * 0.3);
+              sd.ctx.lineTo(s * 0.3, -s * 0.5);
+              sd.ctx.stroke();
+              // Handle - thick D-shape
+              sd.ctx.lineWidth = 3;
+              sd.ctx.beginPath();
+              sd.ctx.moveTo(-s * 0.3, -s * 0.5);
+              sd.ctx.quadraticCurveTo(-s * 0.3, -s * 1.0, 0, -s * 1.0);
+              sd.ctx.quadraticCurveTo(s * 0.3, -s * 1.0, s * 0.3, -s * 0.5);
+              sd.ctx.stroke();
+            } else if (p.shape === 'barbell') {
+              // Long bar
+              sd.ctx.lineWidth = 1.5;
+              sd.ctx.beginPath();
+              sd.ctx.moveTo(-s * 1.6, 0);
+              sd.ctx.lineTo(s * 1.6, 0);
+              sd.ctx.stroke();
+              // Left plates (larger inside, smaller outside)
+              var pw = s * 0.25, ph1 = s * 1.2, ph2 = s * 0.85;
+              sd.ctx.beginPath();
+              sd.ctx.roundRect(-s * 1.3 - pw, -ph2 / 2, pw, ph2, 1.5);
+              sd.ctx.fill();
+              sd.ctx.beginPath();
+              sd.ctx.roundRect(-s * 1.3, -ph1 / 2, pw, ph1, 1.5);
+              sd.ctx.fill();
+              // Right plates
+              sd.ctx.beginPath();
+              sd.ctx.roundRect(s * 1.3, -ph1 / 2, pw, ph1, 1.5);
+              sd.ctx.fill();
+              sd.ctx.beginPath();
+              sd.ctx.roundRect(s * 1.3 + pw, -ph2 / 2, pw, ph2, 1.5);
+              sd.ctx.fill();
+              // Collars
+              sd.ctx.fillRect(-s * 1.05, -s * 0.15, s * 0.15, s * 0.3);
+              sd.ctx.fillRect(s * 0.9, -s * 0.15, s * 0.15, s * 0.3);
+            } else if (p.shape === 'anatomical_brain') {
+              // Draw brain.png sprite (processed to transparent bg + recolored)
+              var bsz = s * 5.32;
+              if (brainSprite) sd.ctx.drawImage(brainSprite, -bsz / 2, -bsz / 2, bsz, bsz);
+            } else if (p.shape === 'sneaker') {
+              // Draw shoe.png sprite (processed to transparent bg + recolored)
+              if (shoeSprite) {
+                var skh = s * 2.4;
+                var skw = skh * (shoeSprite.width / shoeSprite.height);
+                sd.ctx.drawImage(shoeSprite, -skw / 2, -skh / 2, skw, skh);
+              }
+            }
+            sd.ctx.restore();
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.rs;
+            if (p.shape === 'sneaker' && (p.rot > 0.35 || p.rot < -0.35)) {
+              p.rs *= -1;
+            }
+            bounce(p, sw, sh, mouse[1]);
+          });
+
+          requestAnimationFrame(loop);
+        }
+
+        loop();
+      });
+    </script>
+  </body>
+</html>
